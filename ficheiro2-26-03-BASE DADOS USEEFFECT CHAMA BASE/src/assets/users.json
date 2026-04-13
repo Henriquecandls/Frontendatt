@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "eduardo",
+      "email": "eteles@cee.uma.pt"
+    },
+    {
+      "id": 2,
+      "username": "maria",
+      "email": "maria@gmail.com"
+    },
+    {
+      "id": 3,
+      "username": "joao",
+      "email": "joao@gmail.com"
+    },
+    {
+      "id": 4,
+      "username": "ana",
+      "email": "ana@gmail.com"
+    }
+  ]
+}
