@@ -1,0 +1,20 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "eduardo",
+            "email" : "eteles@cee.uma.pt"
+        },
+        {
+            "id": 2,
+            "username": "alice",
+            "email" : "alice@cee.uma.pt"
+        },
+        {
+            "id": 3,
+            "username": "maria",
+            "email" : "maria@cee.uma.pt"
+        }
+    ]
+}
+        

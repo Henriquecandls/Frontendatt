@@ -1,0 +1,17 @@
+.question {
+  background-color: #4f46e5;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: fit-content;
+}
+
+.answer {
+  background-color: #e5e7eb;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: fit-content;
+}
