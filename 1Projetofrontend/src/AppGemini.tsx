@@ -1,48 +1,83 @@
 import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Message from "./components/Message";
+import Header from "./components/Header"
+
+import "./css/App.css";
 
 const genAI = new GoogleGenerativeAI("AIzaSyB8la4K9XBdOxXVrHeOF3hXqO6awHRgTVo");
-
 
 function AppGemini() {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState<
+    { type: "question" | "answer"; text: string }[]
+  >([]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
     setResponse("");
 
+    setMessages((prev) => [
+      ...prev,
+      { type: "question", text: prompt },
+    ]);
+
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
       const result = await model.generateContent(prompt);
-      setResponse(result.response.text());
+
+      const text = result.response.text();
+
+      setResponse(text);
+
+      setMessages((prev) => [
+        ...prev,
+        { type: "answer", text },
+      ]);
     } catch (error) {
-      setResponse("Error generating content. Check your API key.");
+      const errorMsg = "Error generating content. Check your API key.";
+
+      setResponse(errorMsg);
+
+      setMessages((prev) => [
+        ...prev,
+        { type: "answer", text: errorMsg },
+      ]);
+
       console.error(error);
     }
+
     setLoading(false);
+    setPrompt(""); // opcional mas recomendado
   }
 
   return (
     <div className="App" style={{ padding: "20px" }}>
       <h1>Gemini Simple Demo</h1>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder=""
           style={{ width: "300px", padding: "10px" }}
         />
+
         <button type="submit" style={{ padding: "10px" }} disabled={loading}>
           {loading ? "Thinking..." : "Submit"}
         </button>
       </form>
-      <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
-        <strong>Response:</strong> {response}
+
+      {}
+      <div style={{ marginTop: "20px" }}>
+        {messages.map((msg, i) => (
+          <Message key={i} type={msg.type}>
+            {msg.text}
+          </Message>
+        ))}
       </div>
     </div>
   );

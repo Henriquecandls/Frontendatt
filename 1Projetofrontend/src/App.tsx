@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import OutputComponent from "./components/OutputComponent";
-import "./custom.css";
+import "./css/Message.css";
+import "./css/Header.css";
 
 function App() {
   const [output, setOutput] = useState([]);
+   const [loading, setLoading] = useState(true);
   let loading = useRef(true);
 
   useEffect(() => {
