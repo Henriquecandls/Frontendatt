@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Message from "./components/Message";
-import Header from "./components/Header"
-
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import "./css/App.css";
 
 const genAI = new GoogleGenerativeAI("AIzaSyB8la4K9XBdOxXVrHeOF3hXqO6awHRgTVo");
@@ -55,8 +55,11 @@ function AppGemini() {
   }
 
   return (
+    
     <div className="App" style={{ padding: "20px" }}>
-      <h1>Gemini Simple Demo</h1>
+      <Header />
+      
+      
 
       <form onSubmit={handleSubmit}>
         <input
@@ -72,14 +75,17 @@ function AppGemini() {
       </form>
 
       {}
-      <div style={{ marginTop: "20px" }}>
+      <div className="messages" style={{ marginTop: "20px" }}>
         {messages.map((msg, i) => (
           <Message key={i} type={msg.type}>
             {msg.text}
           </Message>
         ))}
       </div>
+      <Footer />
     </div>
+    
+    
   );
 }
 

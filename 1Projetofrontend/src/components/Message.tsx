@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../css/message.css";
 interface Props {
     children: React.ReactNode;
     type: "question" | "answer";
