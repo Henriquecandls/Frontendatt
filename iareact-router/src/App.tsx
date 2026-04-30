@@ -1,25 +1,22 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import Home from "./components/Home"
-import About from "./components/About"
-import Contact from "./components/Contact"
+import { useEffect, useState, useRef } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import axios from "axios";
+import OutputComponent from "./components/OutputComponent";
+
+import Login from "./components/Login";
+import AppGemini from "./AppGemini";
 
 function App() {
   return (
     <BrowserRouter>
-    <nav>
-        <a href="/"><h1>Home</h1></a>
-        <a href="/about"><h2>About</h2></a>
-        <a href="/contact"><h3>Contact</h3></a>
-      </nav>
-      
       <Routes>
-        <Route path="/" element={<Home description="Welcome to home page!" />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/gemini" element={<AppGemini />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
+
 
 export default App;
 

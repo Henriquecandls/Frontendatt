@@ -51,7 +51,7 @@ function AppGemini() {
     }
 
     setLoading(false);
-    setPrompt(""); // opcional mas recomendado
+    setPrompt("");
   }
 
   return (

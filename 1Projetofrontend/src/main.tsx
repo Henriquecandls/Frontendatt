@@ -1,10 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import AppGemini from "./AppGemini.tsx";
-
+import App from "./App.tsx"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AppGemini />
+ 
+    <App />
+  
   </StrictMode>,
 );
+   

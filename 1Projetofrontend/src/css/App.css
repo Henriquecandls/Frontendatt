@@ -1,77 +1,105 @@
 :root {
-  --bg: #121212;
-  --text: #fff;
-  --accent: #4a90e2;
+  --primary-bg: #121212;
+  --primary-color: #ffffff;
+  --accent-color: #4a90e2;
   --accent-hover: #3a78c0;
-  --disabled: #9bbbe8;
-  --radius: 20px;
-  --transition: 0.3s ease;
-}
-
-/* Base */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  --disabled-bg: #9bbbe8;
+  --input-border: #ccc;
+  --input-focus: #4a90e2;
+  --border-radius: 20px;
+  --transition: all 0.3s ease;
 }
 
 .App {
+  font-family: 'Arial', sans-serif;
   min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 120px 20px 220px;
+  box-sizing: border-box;
 }
 
 .App form {
   position: fixed;
-  bottom: 120px;
   left: 50%;
   transform: translateX(-50%);
+  bottom: 120px;
   width: calc(100% - 40px);
   max-width: 760px;
+  padding: 14px 18px;
   display: flex;
   gap: 15px;
-}
-
-.App input {
-  flex: 1;
-  padding: 12px 16px;
-  border-radius: var(--radius);
-  border: 2px solid rgba(255,255,255,0.12);
-  background: rgba(0,0,0,0.65);
-  color: var(--text);
-  transition: var(--transition);
-}
-
-.App input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 8px rgba(74,144,226,0.3);
-}
-
-.App button {
-  padding: 12px 20px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: transparent;
   border: none;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: var(--text);
-  font-weight: 600;
-  cursor: pointer;
+  border-radius: 0;
+  box-shadow: none;
+  z-index: 999;
+}
+
+.App form input[type="text"] {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 16px;
+  border-radius: var(--border-radius);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.65);
+  color: var(--primary-color);
+  font-size: 16px;
   transition: var(--transition);
 }
 
-.App button:hover:not(:disabled) {
+/* Foco simples */
+.App form input[type="text"]:focus {
+  border-color: var(--input-focus);
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+}
+
+/* Botão arredondado */
+.App form button {
+  padding: 12px 20px;
+  border-radius: var(--border-radius);
+  border: none;
+  background: var(--accent-color);
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: var(--transition);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover */
+.App form button:hover:not(:disabled) {
   background: var(--accent-hover);
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.App button:disabled {
-  background: var(--disabled);
+.App form button:disabled {
+  background: var(--disabled-bg);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* Messages */
+/* Fundo escuro */
+body {
+  background-color: var(--primary-bg);
+  color: var(--primary-color);
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+}
+
+/* Messages container */
 .messages {
-  margin-top: 30px;
+  width: 100%;
+  max-width: 100%;
+  margin: 60px auto 0 auto;
   padding-bottom: 260px;
 }
