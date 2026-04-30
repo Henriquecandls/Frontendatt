@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import "./css/App.css";
 
-const genAI = new GoogleGenerativeAI("AIzaSyB8la4K9XBdOxXVrHeOF3hXqO6awHRgTVo");
+const genAI = new GoogleGenerativeAI("");
 
 function AppGemini() {
   const [prompt, setPrompt] = useState("");
