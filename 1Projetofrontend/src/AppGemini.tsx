@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Message from "./components/Message";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Button from "./components/Button";
 import "./css/App.css";
 
-const genAI = new GoogleGenerativeAI("AIzaSyB8la4K9XBdOxXVrHeOF3hXqO6awHRgTVo");
 
+const genAI = new GoogleGenerativeAI("");
 function AppGemini() {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");

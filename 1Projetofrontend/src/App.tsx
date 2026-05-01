@@ -5,6 +5,7 @@ import OutputComponent from "./components/OutputComponent";
 import Header from "./components/Header";
 import AppGemini from "./AppGemini";
 import Login from "./components/Login";
+import Button from "./components/Button";
 
 function App() {
   const [output, setOutput] = useState([]);
