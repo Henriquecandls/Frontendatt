@@ -6,7 +6,7 @@ import { useTheme } from "./components/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 
-const genAI = new GoogleGenerativeAI("AIzaSyAK_3WaF2Im1ttIwkSGSkq5tw5Mf--NS2U");
+const genAI = new GoogleGenerativeAI("");
 
 function AppGemini() {
   const navigate = useNavigate();
