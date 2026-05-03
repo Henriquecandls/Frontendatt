@@ -1,0 +1,53 @@
+.history-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.conversation-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+}
+
+.conversation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.delete-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: darkred;
+}
+
+.conversation-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.msg {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.msg.question {
+  background: #e3f2fd;
+}
+
+.msg.answer {
+  background: #e8f5e9;
+}

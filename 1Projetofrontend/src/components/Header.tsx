@@ -1,22 +1,25 @@
-
 import "../css/Header.css";
+import { useTheme } from "./ThemeContext";
+import Menu from "./Menu.tsx";
+
 export default function Header() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <header className="header">
+    <header className={`header header-${theme}`}>
+
       <div className="title">
         Gemini Simple Demo
       </div>
 
-      <nav className="nav">
-        <a href="#">Home</a>
-        <a href="#">Chat</a>
-        <a href="#">Histórico</a>
-        <a href="#">Dashboard</a>
-      </nav>
+      <Menu />
 
       <div className="actions">
-        <button className="login-btn">Login</button>
+        <button onClick={toggleTheme}>
+          Toggle Theme
+        </button>
       </div>
+
     </header>
   );
 }

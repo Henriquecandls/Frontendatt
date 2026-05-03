@@ -60,3 +60,49 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(79, 70, 229, 0.5);
 }
+
+.header-dark {
+  background: linear-gradient(135deg, #0f0f1a, #1a1a2a);
+  color: white;
+}
+
+.header-light {
+  background: linear-gradient(135deg, #ffffff, #f2f2f2);
+  color: black;
+}
+
+.header-light .nav a {
+  color: #333;
+}
+
+.header-light .nav a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+/* GARANTE TEXTO LEGÍVEL NO MODO CLARO */
+.header-light .title {
+  background: none;
+  -webkit-text-fill-color: black;
+  color: black;
+}
+.actions button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+.header-light .actions button {
+  color: black;
+}
+.header-light .actions button {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: black;
+}
+.actions button {
+  margin-right: 30px; 
+}

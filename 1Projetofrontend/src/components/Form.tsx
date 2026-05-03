@@ -1,14 +1,14 @@
+import { useTheme } from "./ThemeContext";
 
-import Button from "./Button.tsx";
+export default function Form() {
+  const theme = useTheme();
 
-function Form() {
-return (
-    <Button></Button>
-    
-<Panel title="Welcome">
-<Button>Sign up</Button>
-<Button>Log in</Button>
-</Panel>
-);
-}
-export default Form;
+  return (
+    <div style={{
+      background: theme === "dark" ? "#111" : "#fff",
+      color: theme === "dark" ? "#fff" : "#000"
+    }}>
+      
+    </div>
+  );
+}export default Form;

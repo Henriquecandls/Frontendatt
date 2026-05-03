@@ -2,13 +2,16 @@ import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import OutputComponent from "./components/OutputComponent";
-import Header from "./components/Header";
 import AppGemini from "./AppGemini";
 import Login from "./components/Login";
-import Button from "./components/Button";
+import { ThemeContext } from "./components/ThemeContext";
+import Historico from "./components/Historico";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
   const [output, setOutput] = useState([]);
+  const [toogle, setIsToogle] = useState(false);
   const loading = useRef(true);
 
   useEffect(() => {
@@ -19,21 +22,35 @@ function App() {
       loading.current = false;
     });
   }, []);
+return (
+  <ThemeContext.Provider
+    value={{
+      theme: toogle ? "dark" : "light",
+      toggleTheme: () => setIsToogle((prev) => !prev),
+    }}
+  >
+    <BrowserRouter>
+        <Header />
 
-  return (
+      <Routes>
+        <Route path="/" element={<Login />} />
 
-  <BrowserRouter>
+        <Route
+          path="/app"
+          element={
+            <OutputComponent users={output} info={loading} />
+          }
+        />
 
-  <Routes>
+        <Route path="/gemini" element={<AppGemini />} />
 
- <Route path="/" element={<Login />} />
-<Route path="/app"element={<> <Header /><OutputComponent users={output} info={loading} /> </> }/>
-<Route path="/gemini" element={<AppGemini />} />
+        <Route path="/historico" element={<Historico />} />
+      </Routes>
+  <Footer />
 
-  </Routes>
-  
-</BrowserRouter>
-  );
-}
+    </BrowserRouter>
+  </ThemeContext.Provider>
+);
 
-export default App;
+
+}export default App;

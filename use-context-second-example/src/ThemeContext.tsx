@@ -1,5 +1,7 @@
-import { createContext } from 'react'
-
-export type ThemeMode = 'dark' | 'light'
-
-export const ThemeContext = createContext<ThemeMode>('dark')
+import { createContext, useContext } from "react";
+export const ThemeContext = createContext<string | null>(null);
+export function useTheme() {
+const theme = useContext(ThemeContext);
+if (!theme) throw new Error("useTheme must be used within a ThemeProvider");
+return theme;
+}

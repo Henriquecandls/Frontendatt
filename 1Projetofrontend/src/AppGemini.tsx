@@ -1,14 +1,16 @@
 import { useState, createContext, useContext } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Message from "./components/Message";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Button from "./components/Button";
+
+import { useTheme } from "./components/ThemeContext";
+import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 
+const genAI = new GoogleGenerativeAI("AIzaSyAK_3WaF2Im1ttIwkSGSkq5tw5Mf--NS2U");
 
-const genAI = new GoogleGenerativeAI("");
 function AppGemini() {
+  const navigate = useNavigate();
+  const { theme } = useTheme();
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,10 +36,17 @@ function AppGemini() {
 
       setResponse(text);
 
-      setMessages((prev) => [
-        ...prev,
-        { type: "answer", text },
-      ]);
+      setMessages((prev) => {
+        const updated = [
+          ...prev,
+          { type: "answer", text },
+        ];
+
+        localStorage.setItem("messages", JSON.stringify(updated));
+
+        return updated;
+      });
+
     } catch (error) {
       const errorMsg = "Error generating content. Check your API key.";
 
@@ -54,40 +63,54 @@ function AppGemini() {
     setLoading(false);
     setPrompt("");
   }
+function handleNewConversation() {
+  const stored = JSON.parse(localStorage.getItem("conversations") || "[]");
 
-  return (
+  if (messages.length > 0) {
+    stored.push(messages);
+    localStorage.setItem("conversations", JSON.stringify(stored));
+  }
+
+  setMessages([]);
+  setPrompt("");
+  setResponse("");
+}
+
+ return (
+  <div className={`App ${theme}`} style={{ padding: "20px" }}>
     
-    <div className="App" style={{ padding: "20px" }}>
-      <Header />
-      
-      
+    <form onSubmit={handleSubmit}>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          style={{ width: "300px", padding: "10px" }}
-        />
+      <button
+        type="button"
+        onClick={handleNewConversation}
+        style={{ marginBottom: "10px", padding: "10px", cursor: "pointer" }}
+      >
+        Nova conversa
+      </button>
 
-        <button type="submit" style={{ padding: "10px" }} disabled={loading}>
-          {loading ? "Thinking..." : "Submit"}
-        </button>
-      </form>
+      <input
+        type="text"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        style={{ width: "300px", padding: "10px" }}
+      />
 
-      {}
-      <div className="messages" style={{ marginTop: "20px" }}>
-        {messages.map((msg, i) => (
-          <Message key={i} type={msg.type}>
-            {msg.text}
-          </Message>
-        ))}
-      </div>
-      <Footer />
+      <button type="submit" style={{ padding: "10px" }} disabled={loading}>
+        {loading ? "Thinking..." : "Submit"}
+      </button>
+    </form>
+
+    <div className="messages" style={{ marginTop: "20px" }}>
+      {messages.map((msg, i) => (
+        <Message key={i} type={msg.type}>
+          {msg.text}
+        </Message>
+      ))}
     </div>
-    
-    
-  );
+
+  </div>
+);
 }
 
 export default AppGemini;

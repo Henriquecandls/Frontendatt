@@ -1,6 +1,6 @@
 :root {
-  --primary-bg: #121212;
-  --primary-color: #ffffff;
+  --primary-bg: white;
+  --primary-color: black;
   --accent-color: #4a90e2;
   --accent-hover: #3a78c0;
   --disabled-bg: #9bbbe8;
@@ -8,6 +8,11 @@
   --input-focus: #4a90e2;
   --border-radius: 20px;
   --transition: all 0.3s ease;
+}
+
+.App.dark {
+  --primary-bg: #121212;
+  --primary-color: #ffffff;
 }
 
 .App {
@@ -73,7 +78,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Hover */
+
 .App form button:hover:not(:disabled) {
   background: var(--accent-hover);
   transform: translateY(-1px);
@@ -86,7 +91,6 @@
   box-shadow: none;
 }
 
-/* Fundo escuro */
 body {
   background-color: var(--primary-bg);
   color: var(--primary-color);
@@ -96,10 +100,22 @@ body {
   line-height: 1.6;
 }
 
-/* Messages container */
+
 .messages {
   width: 100%;
   max-width: 100%;
   margin: 60px auto 0 auto;
   padding-bottom: 260px;
+}
+
+
+.App {
+  background-color: var(--primary-bg);
+  color: var(--primary-color);
+  transition: var(--transition);
+}
+
+
+html, body, #root {
+  height: 100%;
 }

@@ -1,8 +1,20 @@
 import { createContext, useContext } from "react";
-export const ThemeContext = createContext<string | null>(null);
+
+type ThemeContextType = {
+  theme: string;
+  toggleTheme: () => void;
+};
+
+export const ThemeContext = createContext<ThemeContextType | null>(null);
+
 export function useTheme() {
-const theme = useContext(ThemeContext);
-if (!theme) throw new Error("useTheme must be used within a ThemeProvider");
-return theme;
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+
+  return context;
 }
+
 export default ThemeContext;
