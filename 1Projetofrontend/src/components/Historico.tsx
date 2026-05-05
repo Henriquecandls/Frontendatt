@@ -1,8 +1,24 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../config/firebase";
 import "../css/historico.css";
 
 function Historico() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [conversations, setConversations] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((u) => {
+      if (!u) {
+        navigate("/");
+      } else {
+        setUser(u);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   useEffect(() => {
     const stored = localStorage.getItem("conversations");
@@ -18,6 +34,8 @@ function Historico() {
     setConversations(updated);
     localStorage.setItem("conversations", JSON.stringify(updated));
   }
+
+  if (!user) return null;
 
   return (
     <div className="history-container">

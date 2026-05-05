@@ -63,9 +63,7 @@ function Login () {
             {loading ? "A entrar..." : "Login"}
         </button>
         <button
-  type="button"
-  onClick={handleRegister}
-  disabled={loading}
+  type="button"onClick={handleRegister}disabled={loading}
 >
   Registar
 </button>

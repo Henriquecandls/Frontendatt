@@ -1,10 +1,10 @@
-import { useState, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Message from "./components/Message";
-
 import { useTheme } from "./components/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import "./css/App.css";
+import { auth } from "./config/firebase";
 
 const genAI = new GoogleGenerativeAI("");
 
@@ -14,9 +14,20 @@ function AppGemini() {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+
   const [messages, setMessages] = useState<
     { type: "question" | "answer"; text: string }[]
   >([]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        navigate("/");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -29,9 +40,11 @@ function AppGemini() {
     ]);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-      const result = await model.generateContent(prompt);
+      const model = genAI.getGenerativeModel({
+        model: "gemini-flash-latest",
+      });
 
+      const result = await model.generateContent(prompt);
       const text = result.response.text();
 
       setResponse(text);
@@ -42,13 +55,17 @@ function AppGemini() {
           { type: "answer", text },
         ];
 
-        localStorage.setItem("messages", JSON.stringify(updated));
+        localStorage.setItem(
+          "messages",
+          JSON.stringify(updated)
+        );
 
         return updated;
       });
 
     } catch (error) {
-      const errorMsg = "Error generating content. Check your API key.";
+      const errorMsg =
+        "Error generating content. Check your API key.";
 
       setResponse(errorMsg);
 
@@ -63,54 +80,65 @@ function AppGemini() {
     setLoading(false);
     setPrompt("");
   }
-function handleNewConversation() {
-  const stored = JSON.parse(localStorage.getItem("conversations") || "[]");
 
-  if (messages.length > 0) {
-    stored.push(messages);
-    localStorage.setItem("conversations", JSON.stringify(stored));
+  function handleNewConversation() {
+    const stored = JSON.parse(
+      localStorage.getItem("conversations") || "[]"
+    );
+
+    if (messages.length > 0) {
+      stored.push(messages);
+      localStorage.setItem(
+        "conversations",
+        JSON.stringify(stored)
+      );
+    }
+
+    setMessages([]);
+    setPrompt("");
+    setResponse("");
   }
 
-  setMessages([]);
-  setPrompt("");
-  setResponse("");
-}
+  return (
+    <div className={`App ${theme}`} style={{ padding: "20px" }}>
+      <form onSubmit={handleSubmit}>
+        <button
+          type="button"
+          onClick={handleNewConversation}
+          style={{
+            marginBottom: "10px",
+            padding: "10px",
+            cursor: "pointer",
+          }}
+        >
+          Nova conversa
+        </button>
 
- return (
-  <div className={`App ${theme}`} style={{ padding: "20px" }}>
-    
-    <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          style={{ width: "300px", padding: "10px" }}
+        />
 
-      <button
-        type="button"
-        onClick={handleNewConversation}
-        style={{ marginBottom: "10px", padding: "10px", cursor: "pointer" }}
-      >
-        Nova conversa
-      </button>
+        <button
+          type="submit"
+          style={{ padding: "10px" }}
+          disabled={loading}
+        >
+          {loading ? "Thinking..." : "Submit"}
+        </button>
+      </form>
 
-      <input
-        type="text"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        style={{ width: "300px", padding: "10px" }}
-      />
-
-      <button type="submit" style={{ padding: "10px" }} disabled={loading}>
-        {loading ? "Thinking..." : "Submit"}
-      </button>
-    </form>
-
-    <div className="messages" style={{ marginTop: "20px" }}>
-      {messages.map((msg, i) => (
-        <Message key={i} type={msg.type}>
-          {msg.text}
-        </Message>
-      ))}
+      <div className="messages" style={{ marginTop: "20px" }}>
+        {messages.map((msg, i) => (
+          <Message key={i} type={msg.type}>
+            {msg.text}
+          </Message>
+        ))}
+      </div>
     </div>
-
-  </div>
-);
+  );
 }
 
 export default AppGemini;

@@ -6,9 +6,10 @@ import AppGemini from "./AppGemini";
 import Login from "./components/Login";
 import { ThemeContext } from "./components/ThemeContext";
 import Historico from "./components/Historico";
+import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
+  
 function App() {
   const [output, setOutput] = useState([]);
   const [toogle, setIsToogle] = useState(false);
@@ -24,6 +25,7 @@ function App() {
   }, []);
 return (
   <ThemeContext.Provider
+  
     value={{
       theme: toogle ? "dark" : "light",
       toggleTheme: () => setIsToogle((prev) => !prev),
@@ -45,6 +47,7 @@ return (
         <Route path="/gemini" element={<AppGemini />} />
 
         <Route path="/historico" element={<Historico />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
   <Footer />
 
