@@ -1,44 +1,53 @@
+/* ===== LOGIN FORM ===== */
 form {
-  background: #fff;
+  background: var(--primary-bg);
+  color: var(--primary-color);
   padding: 25px;
   border-radius: 10px;
   width: 300px;
-
   display: flex;
   flex-direction: column;
   gap: 15px;
-
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-
-  margin: 25vh auto 0 auto;
+  margin: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: var(--transition);
 }
 
-/* Inputs */
 form input {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border, #ccc);
   border-radius: 5px;
   font-size: 14px;
-  transition: 0.2s;
+  background: var(--primary-bg);
+  color: var(--primary-color);
+  transition: var(--transition);
 }
 
 form input:focus {
-  border-color: #4facfe;
+  border-color: var(--accent-color);
   outline: none;
 }
 
-/* Botão */
 form button {
   padding: 10px;
-  background: #4facfe;
+  background: var(--accent-color);
   border: none;
   border-radius: 5px;
   color: white;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: var(--transition);
 }
 
-form button:hover {
-  background: #00c6ff;
-} 
+form button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+form button:disabled {
+  background: var(--disabled-bg);
+  cursor: not-allowed;
+}

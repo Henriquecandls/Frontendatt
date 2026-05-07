@@ -1,15 +1,18 @@
 .history-container {
   padding: 20px;
+  padding-bottom: 100px;
   max-width: 900px;
   margin: auto;
 }
 
 .conversation-card {
-  border: 1px solid #ddd;
+  border: 1px solid var(--card-border, #ddd);
   border-radius: 10px;
   margin-bottom: 20px;
   padding: 15px;
-  background: #f9f9f9;
+  background: var(--card-bg, #f9f9f9);
+  color: var(--primary-color);
+  transition: var(--transition);
 }
 
 .conversation-header {
@@ -42,12 +45,29 @@
 .msg {
   padding: 5px;
   border-radius: 5px;
+  color: var(--primary-color);
 }
 
 .msg.question {
-  background: #e3f2fd;
+  background: var(--msg-question-bg, #e3f2fd);
 }
 
 .msg.answer {
-  background: #e8f5e9;
+  background: var(--msg-answer-bg, #e8f5e9);
+}
+
+/* ===== DARK MODE ===== */
+.app-root.dark {
+  --card-bg: #1e1e2e;
+  --card-border: #333;
+  --msg-question-bg: #1a2a3a;
+  --msg-answer-bg: #1a2e1a;
+}
+
+/* ===== LIGHT MODE (explicit fallback) ===== */
+.app-root.light {
+  --card-bg: #f9f9f9;
+  --card-border: #ddd;
+  --msg-question-bg: #e3f2fd;
+  --msg-answer-bg: #e8f5e9;
 }

@@ -1,16 +1,17 @@
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Message from "./components/Message";
 import { useTheme } from "./components/ThemeContext";
 import { useNavigate } from "react-router-dom";
-import "./css/App.css";
 import { auth } from "./config/firebase";
+
 
 const genAI = new GoogleGenerativeAI("");
 
 function AppGemini() {
   const navigate = useNavigate();
   const { theme } = useTheme();
+
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,58 +22,103 @@ function AppGemini() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (!user) {
-        navigate("/");
-      }
+      if (!user) navigate("/");
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!prompt.trim()) return;
+    if (loading) return;
+
     setLoading(true);
     setResponse("");
 
-    setMessages((prev) => [
-      ...prev,
-      { type: "question", text: prompt },
-    ]);
+    const question = prompt;
+    const startTime = Date.now();
+
+    const newMessages: { type: "question" | "answer"; text: string }[] = [
+      { type: "question", text: question },
+    ];
 
     try {
       const model = genAI.getGenerativeModel({
         model: "gemini-flash-latest",
       });
 
-      const result = await model.generateContent(prompt);
+      const result = await model.generateContent(question);
       const text = result.response.text();
+      const endTime = Date.now();
+      const responseTime = endTime - startTime;
+
+      newMessages.push({ type: "answer", text });
 
       setResponse(text);
 
-      setMessages((prev) => {
-        const updated = [
-          ...prev,
-          { type: "answer", text },
-        ];
+      const updated = [...messages, ...newMessages];
+      setMessages(updated);
 
-        localStorage.setItem(
-          "messages",
-          JSON.stringify(updated)
-        );
+      // 🔥 Guardar conversa com tempo de resposta
+      const stored = JSON.parse(
+        localStorage.getItem("conversations") || "[]"
+      );
 
-        return updated;
-      });
+      // Guardar métricas de requisição
+      const metrics = JSON.parse(
+        localStorage.getItem("apiMetrics") || "[]"
+      );
+      metrics.push({ time: responseTime, timestamp: new Date().toISOString() });
+      localStorage.setItem("apiMetrics", JSON.stringify(metrics));
+
+      // garante que existe conversa ativa
+      if (stored.length === 0) {
+        stored.push(updated);
+      } else {
+        stored[stored.length - 1] = updated;
+      }
+
+      localStorage.setItem(
+        "conversations",
+        JSON.stringify(stored)
+      );
 
     } catch (error) {
+      const endTime = Date.now();
+      const responseTime = endTime - startTime;
+
       const errorMsg =
         "Error generating content. Check your API key.";
 
+      newMessages.push({ type: "answer", text: errorMsg });
+
       setResponse(errorMsg);
 
-      setMessages((prev) => [
-        ...prev,
-        { type: "answer", text: errorMsg },
-      ]);
+      const updated = [...messages, ...newMessages];
+      setMessages(updated);
+
+      const stored = JSON.parse(
+        localStorage.getItem("conversations") || "[]"
+      );
+
+      // Guardar tempo mesmo em erro
+      const metrics = JSON.parse(
+        localStorage.getItem("apiMetrics") || "[]"
+      );
+      metrics.push({ time: responseTime, timestamp: new Date().toISOString() });
+      localStorage.setItem("apiMetrics", JSON.stringify(metrics));
+
+      if (stored.length === 0) {
+        stored.push(updated);
+      } else {
+        stored[stored.length - 1] = updated;
+      }
+
+      localStorage.setItem(
+        "conversations",
+        JSON.stringify(stored)
+      );
 
       console.error(error);
     }
@@ -82,17 +128,19 @@ function AppGemini() {
   }
 
   function handleNewConversation() {
+    if (messages.length === 0) return;
+
     const stored = JSON.parse(
       localStorage.getItem("conversations") || "[]"
     );
 
-    if (messages.length > 0) {
-      stored.push(messages);
-      localStorage.setItem(
-        "conversations",
-        JSON.stringify(stored)
-      );
-    }
+    // fecha conversa atual e cria nova
+    stored.push([]);
+
+    localStorage.setItem(
+      "conversations",
+      JSON.stringify(stored)
+    );
 
     setMessages([]);
     setPrompt("");
@@ -123,8 +171,8 @@ function AppGemini() {
 
         <button
           type="submit"
-          style={{ padding: "10px" }}
           disabled={loading}
+          style={{ padding: "10px" }}
         >
           {loading ? "Thinking..." : "Submit"}
         </button>

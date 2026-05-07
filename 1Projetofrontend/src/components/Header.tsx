@@ -1,4 +1,4 @@
-import "../css/Header.css";
+
 import { useTheme } from "./ThemeContext";
 import Menu from "./Menu.tsx";
 import { signOut } from "firebase/auth";
